@@ -1,4 +1,3 @@
-# 文件名: main.py
 from astrbot.api.message_components import *
 from astrbot.api.event import filter, AstrMessageEvent
 from astrbot.api.star import Context, Star, register
@@ -15,7 +14,8 @@ class ModQwenImage(Star):
         self.model = config.get("model")
         self.num_inference_steps = config.get("num_inference_steps")
         self.size = config.get("size")
-        self.api_url = config.get("api_url")
+        base_api_url = config.get("api_url")
+        self.api_url = base_api_url.rstrip('/') + "/v1/images/generations"
         self.seed = config.get("seed")
 
         if not self.api_key or self.api_key == "API_Key":
@@ -31,9 +31,6 @@ class ModQwenImage(Star):
         if not prompt:
             yield event.plain_result("\n请提供提示词！使用方法：/qwen <提示词>")
             return
-
-        yield event.plain_result(f"正在使用 Qwen-Image 模型为您生成图片...\n提示词：{prompt}")
-
         try:
             # 2. 处理随机种子
             try:
@@ -75,7 +72,7 @@ class ModQwenImage(Star):
                         yield event.plain_result(f"\n生成图片失败 (HTTP {response.status}): {error_msg}")
                         return
 
-                    # 6. 【关键修改】从 'images' 字段中提取URL
+                    # 6. 从 'images' 字段中提取URL
                     if not isinstance(response_data, dict) or "images" not in response_data or not response_data["images"]:
                         yield event.plain_result(f"\n生成图片失败: API返回格式异常 - {str(response_data)[:100]}")
                         return
@@ -83,12 +80,8 @@ class ModQwenImage(Star):
                     image_url = response_data['images'][0]['url']
                     returned_seed = response_data.get('seed', current_seed) # 优先使用API返回的seed
                     
-                    # 7. 构建并发送结果
-                    chain = [
-                        Plain(f"模型：{self.model}\n提示词：{prompt}\nSeed: {returned_seed}"),
-                        Image.fromURL(image_url)
-                    ]
-                    yield event.chain_result(chain)
+                    # 7. 发送结果
+                    yield event.chain_result([Image.fromURL(image_url)])
 
         except Exception as e:
             yield event.plain_result(f"\n生成图片时发生未知错误: {str(e)}")

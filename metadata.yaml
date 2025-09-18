@@ -1,0 +1,6 @@
+# 文件名: metadata.yaml
+id: qwen-image-generator
+name: ssuuperr
+author: YourName 
+version: "1.0"
+description: "通过硅基流动(SiliconFlow)API，调用 Qwen/Qwen-Image 模型进行文生图。"

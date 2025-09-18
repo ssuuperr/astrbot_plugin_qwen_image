@@ -1,10 +1,11 @@
 {
     "api_url": {
-        "description": "API 接口地址",
-        "type": "string",
-        "default": "https://api.siliconflow.cn/v1/images/generations",
-        "hint": "API服务器地址，通常保持默认即可。"
+    "description": "API 基础地址",
+    "type": "string",
+    "default": "https://api.siliconflow.cn",
+    "hint": "API服务器的基础地址"
     },
+
     "api_key": {
         "description": "API 密钥",
         "type": "string",
@@ -16,7 +17,7 @@
         "description": "使用的模型名称",
         "type": "string",
         "default": "Qwen/Qwen-Image",
-        "hint": "AI模型的名称，此处应为Qwen-Image模型。"
+        "hint": "调用的生图模型的名称"
     },
     "size": {
         "description": "生成图片的分辨率",
@@ -28,7 +29,7 @@
         "description": "推理步数",
         "type": "int",
         "default": 20,
-        "hint": "生成图片时的推理步数，数值越大生成质量越高但速度越慢。"
+        "hint": "生成图片时的推理步数，数值越大生成质量可能变高。"
     },
     "seed": {
         "description": "种子ID",

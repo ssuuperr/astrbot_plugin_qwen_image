@@ -23,7 +23,7 @@
         "description": "生成图片的分辨率",
         "type": "string",
         "default": "1024x1024",
-        "hint": "图片分辨率，格式为 宽x高。请查阅Qwen-Image模型支持的分辨率。"
+        "hint": "图片分辨率，格式为 宽x高。具体请查阅模型支持的分辨率。"
     },
     "num_inference_steps": {
         "description": "推理步数",
